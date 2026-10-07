@@ -1,0 +1,74 @@
+# VLAN & Inter-VLAN Routing Lab
+
+# Cisco Packet Tracer
+
+# Router-on-a-Stick
+
+==================================================
+SWITCH CONFIGURATION
+====================
+
+! VLAN 10 - USERS
+interface FastEthernet0/1
+switchport mode access
+switchport access vlan 10
+
+! VLAN 20 - ADMIN
+interface FastEthernet0/2
+switchport mode access
+switchport access vlan 20
+
+! Trunk to Router
+interface FastEthernet0/3
+switchport mode trunk
+
+==================================================
+ROUTER CONFIGURATION
+====================
+
+! Physical interface connected to switch
+interface GigabitEthernet0/0
+no ip address
+
+! VLAN 10 Gateway
+interface GigabitEthernet0/0.10
+encapsulation dot1Q 10
+ip address 192.168.10.1 255.255.255.0
+
+! VLAN 20 Gateway
+interface GigabitEthernet0/0.20
+encapsulation dot1Q 20
+ip address 192.168.20.1 255.255.255.0
+
+==================================================
+IP ADDRESSING
+=============
+
+VLAN 10:
+Network: 192.168.10.0/24
+Gateway: 192.168.10.1
+PC0:     192.168.10.10/24
+
+VLAN 20:
+Network: 192.168.20.0/24
+Gateway: 192.168.20.1
+PC1:     192.168.20.20/24
+
+==================================================
+VERIFICATION COMMANDS
+=====================
+
+show vlan brief
+show interfaces trunk
+show ip interface brief
+show running-config | section interface
+
+==================================================
+VERIFICATION RESULT
+===================
+
+PC0 successfully pinged PC1 across VLANs:
+
+192.168.10.10 → 192.168.20.20
+
+Inter-VLAN routing was successfully verified.
